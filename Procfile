@@ -1,1 +1,1 @@
-bot: go run telux.go
+bot: telux-heroku
