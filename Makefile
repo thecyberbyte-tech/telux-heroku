@@ -1,6 +1,6 @@
-APP_NAME := shell2telegram
+APP_NAME := telux-heroku
 APP_DESCRIPTION := $$(awk 'NR == 11, NR == 13' README.md)
-APP_URL := https://github.com/msoap/$(APP_NAME)
+APP_URL := https://github.com/thecyberbyte/$(APP_NAME)
 APP_MAINTAINER := $$(git show HEAD | awk '$$1 == "Author:" {print $$2 " " $$3 " " $$4}')
 GIT_TAG := $$(git describe --tags --abbrev=0)
 
@@ -25,7 +25,7 @@ lint:
 	errcheck ./...
 
 update-from-github:
-	go get -u github.com/msoap/$(APP_NAME)
+	go get -u github.com/thecyberbyte/$(APP_NAME)
 
 build-docker-image:
 	docker run --rm -v $$PWD:/go/src/$(APP_NAME) -w /go/src/$(APP_NAME) golang:alpine sh -c "apk add --no-cache git && go get ./... && go build -ldflags='-w -s' -o $(APP_NAME)"
