@@ -80,13 +80,13 @@ func execShell(shellCmd, input string, varsNames []string, userID, chatID int, u
 	}
 
 	// set S2T_* env vars
-	s2tVariables := [...]struct{ name, value string }{
-		{"S2T_LOGIN", userName},
-		{"S2T_USERID", strconv.Itoa(userID)},
-		{"S2T_USERNAME", userDisplayName},
-		{"S2T_CHATID", strconv.Itoa(chatID)},
+	txVariables := [...]struct{ name, value string }{
+		{"TX_LOGIN", userName},
+		{"TX_USERID", strconv.Itoa(userID)},
+		{"TX_USERNAME", userDisplayName},
+		{"TX_CHATID", strconv.Itoa(chatID)},
 	}
-	for _, row := range s2tVariables {
+	for _, row := range txVariables {
 		osExecCommand.Env = append(osExecCommand.Env, fmt.Sprintf("%s=%s", row.name, row.value))
 	}
 
