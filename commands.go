@@ -33,7 +33,7 @@ func cmdAuth(ctx Ctx) (replayMsg string) {
 
 	if ctx.messageArgs == "" {
 
-		replayMsg = "See code in terminal with shell2telegram or ask code from root user and type:\n" + ctx.messageCmd + " code"
+		replayMsg = "See code in terminal with telux or ask code from root user(@cyberbytedev) and type:\n" + ctx.messageCmd + " code"
 		authCode := ctx.users.DoLogin(ctx.userID, forRoot)
 
 		rootRoleStr := ""
@@ -86,17 +86,17 @@ func cmdHelp(ctx Ctx) (replayMsg string) {
 
 	if ctx.users.IsRoot(ctx.userID) {
 		helpMsgForRoot := []string{
-			"/shell2telegram ban <user_id|username> → ban user",
-			"/shell2telegram broadcast_to_root <message> → send message to all root users in private chat",
-			"/shell2telegram desc <bot description> → set bot description",
-			"/shell2telegram message_to_user <user_id|username> <message> → send message to user in private chat",
-			"/shell2telegram rm </command> → delete command",
-			"/shell2telegram search <query> → search users by name/id",
-			"/shell2telegram stat → get stat about users",
-			"/shell2telegram version → show version",
+			"/telux ban <user_id|username> → ban user",
+			"/telux broadcast_to_root <message> → send message to all root users in private chat",
+			"/telux desc <bot description> → set bot description",
+			"/telux message_to_user <user_id|username> <message> → send message to user in private chat",
+			"/telux rm </command> → delete command",
+			"/telux search <query> → search users by name/id",
+			"/telux stat → get stat about users",
+			"/telux version → show version",
 		}
 		if ctx.appConfig.addExit {
-			helpMsgForRoot = append(helpMsgForRoot, "/shell2telegram exit → terminate bot")
+			helpMsgForRoot = append(helpMsgForRoot, "/telux exit → terminate bot")
 		}
 		sort.Strings(helpMsgForRoot)
 
@@ -106,7 +106,7 @@ func cmdHelp(ctx Ctx) (replayMsg string) {
 	if ctx.appConfig.description != "" {
 		replayMsg = ctx.appConfig.description
 	} else {
-		replayMsg = "This bot created with shell2telegram"
+		replayMsg = "This bot created with TeluxAPI (API will be public soon)"
 	}
 	replayMsg += "\n\n" +
 		"available commands:\n" +
@@ -144,7 +144,7 @@ func cmdUser(ctx Ctx) {
 }
 
 // /shell2telegram stat
-func cmdShell2telegramStat(ctx Ctx) (replayMsg string) {
+func cmdteluxStat(ctx Ctx) (replayMsg string) {
 	for userID := range ctx.users.list {
 		replayMsg += ctx.users.StringVerbose(userID) + "\n"
 	}
@@ -153,11 +153,11 @@ func cmdShell2telegramStat(ctx Ctx) (replayMsg string) {
 }
 
 // /shell2telegram search
-func cmdShell2telegramSearch(ctx Ctx) (replayMsg string) {
+func cmdteluxSearch(ctx Ctx) (replayMsg string) {
 	query := ctx.messageArgs
 
 	if query == "" {
-		return "Please set query: /shell2telegram search <query>"
+		return "Please set query: /telux search <query>"
 	}
 
 	for _, userID := range ctx.users.Search(query) {
@@ -168,17 +168,17 @@ func cmdShell2telegramSearch(ctx Ctx) (replayMsg string) {
 }
 
 // /shell2telegram ban
-func cmdShell2telegramBan(ctx Ctx) (replayMsg string) {
+func cmdteluxBan(ctx Ctx) (replayMsg string) {
 	userName := ctx.messageArgs
 
 	if userName == "" {
-		return "Please set user_id or login: /shell2telegram ban <user_id|username>"
+		return "Please set user_id or login: /telux ban <user_id|username>"
 	}
 
 	userID := ctx.users.FindByIDOrUserName(userName)
 
 	if userID > 0 && ctx.users.BanUser(userID) {
-		replayMsg = fmt.Sprintf("User %s banned", ctx.users.String(userID))
+		replayMsg = fmt.Sprintf("Another User %s Bites the Dust (banned)", ctx.users.String(userID))
 	} else {
 		replayMsg = "User not found"
 	}
@@ -187,11 +187,11 @@ func cmdShell2telegramBan(ctx Ctx) (replayMsg string) {
 }
 
 // set bot description
-func cmdShell2telegramDesc(ctx Ctx) (replayMsg string) {
+func cmdteluxDesc(ctx Ctx) (replayMsg string) {
 	description := ctx.messageArgs
 
 	if description == "" {
-		return "Please set description: /shell2telegram desc <bot description>"
+		return "Please set description: /telux desc <bot description>"
 	}
 
 	ctx.appConfig.description = description
@@ -201,11 +201,11 @@ func cmdShell2telegramDesc(ctx Ctx) (replayMsg string) {
 }
 
 // /shell2telegram rm "/command" - delete command
-func cmdShell2telegramRm(ctx Ctx) (replayMsg string) {
+func cmdteluxRm(ctx Ctx) (replayMsg string) {
 	commandName := ctx.messageArgs
 
 	if commandName == "" {
-		return "Please set command for delete: /shell2telegram rm </command>"
+		return "Please set command for delete: /telux rm </command>"
 	}
 	if _, ok := ctx.commands[commandName]; ok {
 		delete(ctx.commands, commandName)
@@ -218,13 +218,13 @@ func cmdShell2telegramRm(ctx Ctx) (replayMsg string) {
 }
 
 // /shell2telegram version - get version
-func cmdShell2telegramVersion(_ Ctx) (replayMsg string) {
-	replayMsg = fmt.Sprintf("shell2telegram %s", Version)
+func cmdteluxVersion(_ Ctx) (replayMsg string) {
+	replayMsg = fmt.Sprintf("telux %s", Version)
 	return replayMsg
 }
 
 // /shell2telegram exit - terminate bot
-func cmdShell2telegramExit(ctx Ctx) (replayMsg string) {
+func cmdteluxExit(ctx Ctx) (replayMsg string) {
 	if ctx.appConfig.addExit {
 		replayMsg = "bye..."
 		go func() {
@@ -235,11 +235,11 @@ func cmdShell2telegramExit(ctx Ctx) (replayMsg string) {
 }
 
 // /shell2telegram broadcast_to_root - broadcast message to root users in private chat
-func cmdShell2telegramBroadcastToRoot(ctx Ctx) (replayMsg string) {
+func cmdteluxBroadcastToRoot(ctx Ctx) (replayMsg string) {
 	message := ctx.messageArgs
 
 	if message == "" {
-		replayMsg = "Please set message: /shell2telegram broadcast_to_root <message>"
+		replayMsg = "Please set message: /telux broadcast_to_root <message>"
 	} else {
 		ctx.users.BroadcastForRoots(ctx.messageSignal,
 			fmt.Sprintf("Message from %s:\n%s", ctx.users.String(ctx.userID), message),
@@ -252,11 +252,11 @@ func cmdShell2telegramBroadcastToRoot(ctx Ctx) (replayMsg string) {
 }
 
 // /shell2telegram message_to_user user_id|username "message" - send message to user in private chat
-func cmdShell2telegramMessageToUser(ctx Ctx) (replayMsg string) {
+func cmdteluxMessageToUser(ctx Ctx) (replayMsg string) {
 	userName, message := splitStringHalfBySpace(ctx.messageArgs)
 
 	if userName == "" || message == "" {
-		replayMsg = "Please set user_name and message: /shell2telegram message_to_user <user_id|username> <message>"
+		replayMsg = "Please set user_name and message: /telux message_to_user <user_id|username> <message>"
 	} else {
 		userID := ctx.users.FindByIDOrUserName(userName)
 
