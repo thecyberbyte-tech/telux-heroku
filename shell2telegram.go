@@ -33,7 +33,7 @@ const (
 	SecondsForAutoSaveUsersToDB = 60
 
 	// DBFileName - DB json name
-	DBFileName = "shell2telegram.json"
+	DBFileName = "telux.json"
 
 	// shell2telegram command name for get plain text without /command
 	cmdPlainText = "/:plain_text"
@@ -91,7 +91,7 @@ type BotMessage struct {
 // get config
 func getConfig() (commands Commands, appConfig Config, err error) {
 	flag.StringVar(&appConfig.token, "tb-token", "", "setting bot token (or set TB_TOKEN variable)")
-	flag.BoolVar(&appConfig.addExit, "add-exit", false, "adding \"/shell2telegram exit\" command for terminate bot (for roots only)")
+	flag.BoolVar(&appConfig.addExit, "add-exit", false, "adding \"/telux exit\" command for terminate bot (for roots only)")
 	flag.IntVar(&appConfig.botTimeout, "timeout", DefaultBotTimeout, "setting timeout for bot")
 	flag.StringVar(&appConfig.bindAddr, "bind-addr", "", "bind address to listen webhook requests, like: 0.0.0.0:8080")
 	flag.Var(&urlValue{&appConfig.webhookURL}, "webhook", "url of bot's webhook")
@@ -280,15 +280,15 @@ func main() {
 
 	// all /shell2telegram sub-commands handlers
 	internalCommands := map[string]func(Ctx) string{
-		"stat":              cmdShell2telegramStat,
-		"ban":               cmdShell2telegramBan,
-		"search":            cmdShell2telegramSearch,
-		"desc":              cmdShell2telegramDesc,
-		"rm":                cmdShell2telegramRm,
-		"exit":              cmdShell2telegramExit,
-		"version":           cmdShell2telegramVersion,
-		"broadcast_to_root": cmdShell2telegramBroadcastToRoot,
-		"message_to_user":   cmdShell2telegramMessageToUser,
+		"stat":              cmdteluxStat,
+		"ban":               cmdteluxBan,
+		"search":            cmdteluxSearch,
+		"desc":              cmdteluxDesc,
+		"rm":                cmdteluxRm,
+		"exit":              cmdteluxExit,
+		"version":           cmdteluxVersion,
+		"broadcast_to_root": cmdteluxBroadcastToRoot,
+		"message_to_user":   cmdteluxMessageToUser,
 	}
 
 	doExit := false
