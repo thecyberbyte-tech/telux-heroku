@@ -29,7 +29,7 @@ update-from-github:
 
 build-docker-image:
 	docker run --rm -v $$PWD:/go/src/$(APP_NAME) -w /go/src/$(APP_NAME) golang:alpine sh -c "apk add --no-cache git && go get ./... && go build -ldflags='-w -s' -o $(APP_NAME)"
-	docker build -t msoap/$(APP_NAME):latest .
+	docker build -t thecyberbyte/telux-heroku:latest .
 	rm -f $(APP_NAME)
 
 gometalinter:
